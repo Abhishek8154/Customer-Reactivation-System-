@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shree Roofing Solutions — Reactivation Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #15171B; --surface: #1C1F25; --ink: #EDEAE2; --ink-soft: #A6A9B2; --ink-faint: #6D7078;
+    --line: #2E323A; --gold: #C6A15B; --gold-dim: #8F7642; --good: #7BAE8F; --danger: #C4695C;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root[data-theme="light"] {
+    --bg: #F6F4EF; --surface: #FFFFFF; --ink: #1D2024; --ink-soft: #5A5E66; --ink-faint: #92959D;
+    --line: #E1DDD1; --gold: #9C7B3F; --gold-dim: #B7975C; --good: #3F7A53; --danger: #B4483F;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; color: var(--ink); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(198,161,91,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(123,174,143,0.06), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 56px 28px 90px; }
+  header.masthead {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+    padding-bottom: 28px; margin-bottom: 8px; border-bottom: 1px solid var(--gold-dim);
+  }
+  .brand-mark { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .brand-mark .glyph {
+    width: 22px; height: 22px; border: 1.3px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 11px; font-weight: 600;
+    font-family: 'Fraunces', serif;
+  }
+  .brand-eyebrow { font-size: 12px; letter-spacing: 0.06em; color: var(--gold); font-weight: 500; }
+  .masthead h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-style: italic; font-size: clamp(30px, 4.2vw, 44px); margin: 0; line-height: 1.05; letter-spacing: -0.01em; }
+  .status-block { text-align: right; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .status { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--ink-faint); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 0 rgba(123,174,143,0.5); animation: pulseDot 2.4s ease-out infinite; }
+  .dot.error { background: var(--danger); animation: none; box-shadow: none; }
+  @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(123,174,143,0.45); } 70% { box-shadow: 0 0 0 7px rgba(123,174,143,0); } 100% { box-shadow: 0 0 0 0 rgba(123,174,143,0); } }
+  button.refresh { border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); font-family: inherit; font-size: 12.5px; padding: 7px 14px; border-radius: 4px; cursor: pointer; transition: all .15s ease; }
+  button.refresh:hover { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 0 3px rgba(198,161,91,0.1); }
+  button.refresh:focus-visible, .tab:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
+
+  .tabs { display: flex; gap: 28px; border-bottom: 1px solid var(--line); margin: 34px 0 32px; }
+  .tab { background: none; border: none; font-family: 'Inter', sans-serif; font-size: 14.5px; color: var(--ink-faint); padding: 0 0 13px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s ease; }
+  .tab:hover { color: var(--ink-soft); }
+  .tab.active { color: var(--ink); border-bottom-color: var(--gold); }
+  .tab .tab-count { font-size: 12px; color: var(--ink-faint); margin-left: 4px; }
+  .tabpanel { display: none; }
+  .tabpanel.active { display: block; animation: fadeIn .3s ease both; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0 0 36px; }
+  .stat {
+    padding: 16px 18px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--stat-accent, var(--gold-dim)); border-radius: 6px;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .stat:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -12px rgba(0,0,0,0.5); }
+  .stat.filterable { cursor: pointer; }
+  .stat.filterable.active { border-color: var(--stat-accent, var(--gold)); background: color-mix(in srgb, var(--stat-accent, var(--gold)) 8%, var(--surface)); }
+  .stat.filterable.active .num { color: var(--stat-accent, var(--gold)); }
+  .stat .label { font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .stat .num { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 32px; line-height: 1; font-variant-numeric: oldstyle-nums; color: var(--ink); }
+  .chart-block { margin: 0 0 40px; padding: 22px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 10px 30px -18px rgba(0,0,0,0.55); }
+  .chart-label { font-size: 11.5px; color: var(--ink-faint); margin-bottom: 16px; letter-spacing: 0.04em; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 12px; height: 56px; }
+  .chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 9px; height: 100%; justify-content: flex-end; }
+  .chart-bar { width: 100%; max-width: 34px; background: var(--gold-dim); border-radius: 1px 1px 0 0; min-height: 2px; transition: background .15s; }
+  .chart-bar-col:hover .chart-bar { background: var(--gold); }
+  .chart-count { font-size: 10px; color: var(--ink-faint); font-variant-numeric: oldstyle-nums; }
+  .chart-day { font-size: 10.5px; color: var(--ink-faint); }
+
+  .entry { border-bottom: 1px solid var(--line); padding: 20px 20px 20px 18px; display: grid; grid-template-columns: 150px 1fr; gap: 4px 22px; border-left: 2px solid transparent; border-radius: 4px; transition: border-color .15s ease, background .15s ease; animation: fadeIn .4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .entry:hover { border-left-color: var(--gold-dim); background: color-mix(in srgb, var(--gold) 3%, transparent); }
+  .entry:last-child { border-bottom: none; }
+  .entry .when { font-size: 12px; color: var(--ink-faint); padding-top: 3px; font-variant-numeric: oldstyle-nums; }
+  .entry .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 5px; }
+  .entry .name { font-weight: 600; font-size: 15.5px; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--gold-dim); color: var(--gold); letter-spacing: 0.01em; }
+  .badge.opted-out { border-color: var(--danger); color: var(--danger); }
+  .entry .meta { font-size: 13px; color: var(--ink-soft); margin-bottom: 7px; }
+  .entry .snippet { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; white-space: pre-line; }
+  .empty { padding: 60px 0; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+  .empty svg { margin-bottom: 14px; opacity: .45; }
+  .empty strong { display: block; margin-bottom: 6px; color: var(--ink-soft); font-weight: 600; font-family: 'Fraunces', serif; font-size: 18px; }
+  .error-box { background: var(--surface); border-left: 2px solid var(--danger); padding: 18px 20px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; }
+  .error-box strong { color: var(--ink); }
+  .search-bar { margin: 0 0 28px; }
+  .search-bar input {
+    width: 100%; background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+    font-family: 'Inter', sans-serif; font-size: 13.5px; padding: 10px 14px; border-radius: 5px;
+    outline: none; transition: border-color .15s ease;
+  }
+  .search-bar input::placeholder { color: var(--ink-faint); }
+  .search-bar input:focus { border-color: var(--gold); }
+
+  .section-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 20px; flex-wrap: wrap; }
+  .section-title { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 19px; margin: 0; }
+  .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .search-inline {
+    background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+    font-family: 'Inter', sans-serif; font-size: 13px; padding: 8px 14px; border-radius: 5px;
+    outline: none; transition: border-color .15s ease, width .15s ease; width: 200px; max-width: 100%;
+  }
+  .search-inline::placeholder { color: var(--ink-faint); }
+  .search-inline:focus { border-color: var(--gold); width: 240px; }
+  .btn-primary {
+    background: var(--gold); border: none; color: #1A1710; font-family: 'Inter', sans-serif; font-weight: 600;
+    font-size: 13px; padding: 9px 18px; border-radius: 5px; cursor: pointer; transition: opacity .15s ease; white-space: nowrap;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin-bottom: 36px; }
+  .customer-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; animation: fadeIn .4s ease both;
+  }
+  .customer-card:hover { transform: translateY(-2px); border-color: var(--gold-dim); box-shadow: 0 8px 24px -14px rgba(0,0,0,0.5); }
+  .customer-card { cursor: pointer; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+    display: flex; align-items: center; justify-content: center; z-index: 50; padding: 20px;
+    animation: fadeIn .2s ease both;
+  }
+  .modal-box {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; max-width: 480px; width: 100%;
+    max-height: 82vh; overflow-y: auto; padding: 26px 28px; box-shadow: 0 24px 70px -20px rgba(0,0,0,0.75);
+  }
+  .modal-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .modal-title { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 21px; margin: 0; }
+  .modal-close { background: none; border: 1px solid var(--line); color: var(--ink-faint); width: 26px; height: 26px; border-radius: 5px; cursor: pointer; font-size: 14px; line-height: 1; flex-shrink: 0; }
+  .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+  .modal-meta { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 6px; }
+  .modal-badges { display: flex; gap: 8px; margin: 12px 0 18px; flex-wrap: wrap; }
+  .modal-section-label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin: 20px 0 10px; }
+  .modal-msg-item { border-top: 1px solid var(--line); padding: 14px 0; }
+  .modal-msg-item:first-child { border-top: none; padding-top: 0; }
+  .modal-msg-time { font-size: 11.5px; color: var(--gold); margin-bottom: 5px; font-variant-numeric: oldstyle-nums; }
+  .modal-msg-text { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; white-space: pre-line; }
+  .modal-empty { font-size: 13px; color: var(--ink-faint); padding: 8px 0; }
+  .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 11px; color: var(--ink-faint); font-variant-numeric: oldstyle-nums; }
+  .card-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .card-sub { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 14px; }
+  .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-faint); border-top: 1px solid var(--line); padding-top: 10px; }
+  .card-foot .card-phone { font-variant-numeric: oldstyle-nums; }
+
+  .add-box { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 10px 30px -18px rgba(0,0,0,0.55); padding: 26px 26px 22px; margin-bottom: 40px; }
+  .add-box h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 19px; margin: 0 0 4px; }
+  .add-box .sub { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 20px; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.01em; }
+  .field input, .field select {
+    background: var(--bg); border: 1px solid var(--line); color: var(--ink);
+    font-family: 'Inter', sans-serif; font-size: 13.5px; padding: 9px 12px; border-radius: 5px; outline: none;
+    transition: border-color .15s ease;
+  }
+  .field input:focus, .field select:focus { border-color: var(--gold); }
+  .consent-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 4px; }
+  .consent-row input { margin-top: 3px; accent-color: var(--gold); }
+  .consent-row label { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
+  .add-box .actions { margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+  button.submit {
+    background: var(--gold); border: none; color: #1A1710; font-family: 'Inter', sans-serif; font-weight: 600;
+    font-size: 13.5px; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: opacity .15s;
+  }
+  button.submit:hover { opacity: 0.88; }
+  button.submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .form-msg { font-size: 12.5px; }
+  .form-msg.ok { color: var(--good); }
+  .form-msg.err { color: var(--danger); }
+
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-faint); font-size: 12px; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .csv-block { }
+  .csv-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .file-btn {
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink-soft);
+    font-family: 'Inter', sans-serif; font-size: 13px; padding: 9px 16px; border-radius: 5px;
+    cursor: pointer; transition: border-color .15s ease;
+  }
+  .file-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .csv-filename { font-size: 12.5px; color: var(--ink-faint); }
+  button.submit.ghost { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); }
+  button.submit.ghost:hover { background: var(--gold); color: #1A1710; }
+  .template-link { font-size: 12.5px; color: var(--gold); text-decoration: none; margin-left: auto; }
+  .template-link:hover { text-decoration: underline; }
+  .sub.tiny { font-size: 11.5px; margin: 10px 0 0; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr; row-gap: 24px; }
+    .entry { grid-template-columns: 1fr; padding-left: 0; }
+    .field-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="brand-eyebrow">Shree Roofing Solutions</div>
+      <h1>Reactivation Ledger</h1>
+    </div>
+    <div class="status-block">
+      <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Loading…</span></div>
+      <button class="refresh" id="refreshBtn">Refresh</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="log">Sent messages <span class="tab-count" id="countLog"></span></button>
+    <button class="tab" data-tab="addcustomer">Customer</button>
+    <button class="tab" data-tab="customerlist">Customer list <span class="tab-count" id="countCustomers"></span></button>
+  </nav>
+
+  <!-- SENT MESSAGES TAB -->
+  <section class="tabpanel active" id="tab-log">
+    <div class="stats">
+      <div class="stat filterable active" data-filter="all" style="--stat-accent:#C6A15B">
+        <div class="label">Win-back messages sent</div>
+        <div class="num" id="statTotal">–</div>
+      </div>
+      <div class="stat filterable" data-filter="today" style="--stat-accent:#7BAE8F">
+        <div class="label">Sent today</div>
+        <div class="num" id="statToday">–</div>
+      </div>
+      <div class="stat filterable" data-filter="week" style="--stat-accent:#8FA6C9">
+        <div class="label">Sent this week</div>
+        <div class="num" id="statWeek">–</div>
+      </div>
+    </div>
+    <div class="chart-block">
+      <div class="chart-label">Last 7 days</div>
+      <div class="chart-bars" id="chartBars"></div>
+    </div>
+    <div class="search-bar"><input id="searchInput" type="text" placeholder="Search by name…"></div>
+    <section id="panel" class="card-grid"></section>
+  </section>
+
+  <!-- CUSTOMER (ADD) TAB -->
+  <section class="tabpanel" id="tab-addcustomer">
+    <div class="add-box">
+      <h2>Add a customer</h2>
+      <p class="sub">New entries are added straight to the Customer List sheet and picked up by the next reactivation campaign.</p>
+      <form id="addForm">
+        <div class="field-grid">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" required></div>
+          <div class="field"><label for="f-phone">Phone</label><input id="f-phone" required></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" type="email"></div>
+          <div class="field"><label for="f-service">Last service type</label><input id="f-service" placeholder="Roof Repair"></div>
+          <div class="field"><label for="f-date">Last service date</label><input id="f-date" type="date" min="2015-01-01" max="2026-12-31" required></div>
+        </div>
+        <div class="consent-row">
+          <input type="checkbox" id="f-consent" required>
+          <label for="f-consent">This customer gave explicit permission to be contacted for offers and reminders.</label>
+        </div>
+        <div class="actions">
+          <button type="submit" class="submit" id="submitBtn">Add customer</button>
+          <span class="form-msg" id="formMsg"></span>
+        </div>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <div class="csv-block">
+        <div class="csv-row">
+          <label class="file-btn" for="csvInput">Choose CSV file</label>
+          <input type="file" id="csvInput" accept=".csv" hidden>
+          <span id="csvFileName" class="csv-filename">No file chosen</span>
+          <button type="button" class="submit ghost" id="csvUploadBtn" disabled>Upload CSV</button>
+          <a href="#" id="csvTemplateLink" class="template-link">Download template</a>
+        </div>
+        <p class="sub tiny">Columns expected, in order: Name, Phone, Email, LastServiceType (optional), LastServiceDate (YYYY-MM-DD), OptedIn (yes/no). Only include customers who gave explicit permission to be contacted.</p>
+        <span class="form-msg" id="csvMsg"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOMER LIST TAB -->
+  <section class="tabpanel" id="tab-customerlist">
+    <div class="section-header">
+      <h2 class="section-title">Customer list</h2>
+      <input id="customerSearchInput" type="text" class="search-inline" placeholder="Search customers…">
+    </div>
+    <section id="customerPanel" class="card-grid"></section>
+  </section>
+</div>
+
+<script>
+// ---- CONFIGURE HERE ----
+const SHEET = { id: '11RPrD2Z4-zSybcgMlkkxaGjWQWqJD0aFQMMX4BL0bHM', tab: 'Reactivation Log' };
+const CUSTOMER_TAB = 'Customer List';
+// Paste your Google Apps Script Web App URL here (see setup notes below) so "Add customer" can write to the sheet.
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhOX3-J3keHhh2rln1Njq8Y5LAGRgITW-Ixaw84_JWsv0t054q12THj-e2wgW80Y0VHQ/exec';
+const REFRESH_MS = 60000;
+// --------------------------
+
+function gvizUrl(id, tab) { return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab)}&headers=1`; }
+async function fetchSheet(id, tab) {
+  const res = await fetch(gvizUrl(id, tab));
+  const text = await res.text();
+  const m = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);?\s*$/);
+  if (!m) throw new Error('parse failure');
+  const json = JSON.parse(m[1]);
+  if (!json.table || !json.table.rows) return [];
+  return json.table.rows.map(r => (r.c || []).map(c => (c && (c.f ?? c.v)) ? String(c.f ?? c.v) : ''));
+}
+function fmtTime(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso || '—';
+  return d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+function fmtDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso || '—';
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function isToday(iso) { const d = new Date(iso); return !isNaN(d) && d.toDateString() === new Date().toDateString(); }
+function isThisWeek(iso) { const d = new Date(iso); if (isNaN(d)) return false; const now = new Date(); const diff = (now - d) / 86400000; return diff >= 0 && diff <= 7; }
+function esc(s) { return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let rows = [], customerRows = [], uid = 0, searchText = '', customerSearchText = '', statFilter = 'all';
+function getFiltered() {
+  const q = searchText.trim().toLowerCase();
+  let out = q ? rows.filter(r => (r[0] || '').toLowerCase().includes(q)) : rows;
+  if (statFilter === 'today') out = out.filter(r => isToday(r[4]));
+  if (statFilter === 'week') out = out.filter(r => isThisWeek(r[4]));
+  return out;
+}
+function getFilteredCustomers() {
+  const q = customerSearchText.trim().toLowerCase();
+  return q ? customerRows.filter(r => (r[0] || '').toLowerCase().includes(q)) : customerRows;
+}
+function animateNumber(el, target) {
+  target = Number(target) || 0;
+  const start = Number(el.dataset.val || 0);
+  const duration = 500;
+  const t0 = performance.now();
+  function step(now) {
+    const p = Math.min(1, (now - t0) / duration);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(start + (target - start) * eased);
+    if (p < 1) requestAnimationFrame(step); else el.dataset.val = target;
+  }
+  requestAnimationFrame(step);
+}
+const emptyIcon = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 8h12M6 12h12M6 16h8"/></svg>';
+
+function render() {
+  const el = document.getElementById('panel');
+  if (!rows.length) { el.innerHTML = `<div class="empty">${emptyIcon}<strong>No win-back messages yet</strong>Reactivation campaign sends will appear here.</div>`; return; }
+  const filtered = getFiltered();
+  if (!filtered.length) { el.innerHTML = `<div class="empty">${emptyIcon}<strong>No matches</strong>Nothing matches this filter or search.</div>`; return; }
+  el.innerHTML = filtered.slice().reverse().map((r, idx) => {
+    const [name, phone, segment, msg, sentAt] = r;
+    return `<div class="customer-card" style="animation-delay:${idx * 30}ms" onclick="openMessageModal('${esc(phone)}','${esc(sentAt)}')">
+      <div class="card-top">
+        <span>${fmtTime(sentAt)}</span>
+        <span class="badge">${esc(segment) || 'Win-back'}</span>
+      </div>
+      <div class="card-name">${esc(name)}</div>
+      <div class="card-sub" style="-webkit-line-clamp:2; display:-webkit-box; -webkit-box-orient:vertical; overflow:hidden;">${esc(msg) || 'No message text recorded.'}</div>
+      <div class="card-foot"><span class="card-phone">${esc(phone)}</span><span>Tap to read full message</span></div>
+    </div>`;
+  }).join('');
+}
+window.openMessageModal = function(phone, sentAt) {
+  const msgRow = rows.find(r => r[1] === phone && r[4] === sentAt);
+  if (!msgRow) return;
+  const [name, custPhone, segment, msg] = msgRow;
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'customerModal';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 class="modal-title">${esc(name)}</h3>
+        <button class="modal-close" onclick="closeCustomerModal()">✕</button>
+      </div>
+      <div class="modal-meta">${esc(custPhone)} · ${fmtTime(sentAt)}</div>
+      <div class="modal-badges"><span class="badge">${esc(segment) || 'Win-back'}</span></div>
+      <div class="modal-section-label">Message sent</div>
+      <div class="modal-msg-text">${esc(msg) || 'No message text recorded.'}</div>
+    </div>`;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeCustomerModal(); });
+  document.body.appendChild(overlay);
+};
+function renderCustomers() {
+  const el = document.getElementById('customerPanel');
+  if (!customerRows.length) { el.innerHTML = `<div class="empty">${emptyIcon}<strong>No customers yet</strong>Add your first customer to get started.</div>`; return; }
+  const filtered = getFilteredCustomers();
+  if (!filtered.length) { el.innerHTML = `<div class="empty">${emptyIcon}<strong>No matches</strong>No customers match that search.</div>`; return; }
+  el.innerHTML = filtered.slice().reverse().map((r, idx) => {
+    const [name, phone, email, lastServiceType, lastServiceDate, optedIn] = r;
+    const opted = (optedIn || '').trim().toLowerCase() === 'yes';
+    return `<div class="customer-card" style="animation-delay:${idx * 30}ms" onclick="openCustomerModal('${esc(phone)}')">
+      <div class="card-top">
+        <span>${fmtDate(lastServiceDate)}</span>
+        <span class="badge ${opted ? '' : 'opted-out'}">${opted ? 'Opted in' : 'Not opted in'}</span>
+      </div>
+      <div class="card-name">${esc(name)}</div>
+      <div class="card-sub">${esc(lastServiceType) || 'No service type recorded'}</div>
+      <div class="card-foot">
+        <span class="card-phone">${esc(phone)}</span>
+        <span>${esc(email) || 'No email'}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.openCustomerModal = function(phone) {
+  const customer = customerRows.find(r => r[1] === phone);
+  if (!customer) return;
+  const [name, custPhone, email, lastServiceType, lastServiceDate, optedIn] = customer;
+  const opted = (optedIn || '').trim().toLowerCase() === 'yes';
+  const messages = rows.filter(r => r[1] === phone).slice().reverse();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'customerModal';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 class="modal-title">${esc(name)}</h3>
+        <button class="modal-close" onclick="closeCustomerModal()">✕</button>
+      </div>
+      <div class="modal-meta">${esc(custPhone)}${email ? ' · ' + esc(email) : ''}</div>
+      <div class="modal-badges">
+        <span class="badge ${opted ? '' : 'opted-out'}">${opted ? 'Opted in' : 'Not opted in'}</span>
+        ${lastServiceType ? `<span class="badge">${esc(lastServiceType)}</span>` : ''}
+        <span class="badge">Last service: ${fmtDate(lastServiceDate)}</span>
+      </div>
+      <div class="modal-section-label">Message history (${messages.length})</div>
+      ${messages.length
+        ? messages.map(m => `
+          <div class="modal-msg-item">
+            <div class="modal-msg-time">${fmtTime(m[4])} · ${esc(m[2]) || 'Win-back'}</div>
+            <div class="modal-msg-text">${esc(m[3]) || 'No message text recorded.'}</div>
+          </div>`).join('')
+        : `<div class="modal-empty">No messages sent to this customer yet.</div>`}
+    </div>`;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeCustomerModal(); });
+  document.body.appendChild(overlay);
+};
+window.closeCustomerModal = function() {
+  const el = document.getElementById('customerModal');
+  if (el) el.remove();
+};
+function updateStats() {
+  animateNumber(document.getElementById('statTotal'), rows.length);
+  animateNumber(document.getElementById('statToday'), rows.filter(r => isToday(r[4])).length);
+  animateNumber(document.getElementById('statWeek'), rows.filter(r => isThisWeek(r[4])).length);
+}
+function renderChart() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(d); }
+  const counts = days.map(d => rows.filter(r => { const rd = new Date(r[4]); return !isNaN(rd) && rd.toDateString() === d.toDateString(); }).length);
+  const max = Math.max(1, ...counts);
+  document.getElementById('chartBars').innerHTML = days.map((d, i) => `
+    <div class="chart-bar-col">
+      <div class="chart-count">${counts[i] || ''}</div>
+      <div class="chart-bar" style="height:${Math.max(3, (counts[i] / max) * 100)}%"></div>
+      <div class="chart-day">${d.toLocaleDateString(undefined, { weekday: 'short' })[0]}</div>
+    </div>`).join('');
+}
+function setStatus(state, text) {
+  document.getElementById('statusDot').className = 'dot' + (state === 'error' ? ' error' : '');
+  document.getElementById('statusText').textContent = text;
+}
+async function loadAll() {
+  setStatus('loading', 'Refreshing…');
+  try {
+    const [logRows, custRows] = await Promise.all([
+      fetchSheet(SHEET.id, SHEET.tab),
+      fetchSheet(SHEET.id, CUSTOMER_TAB)
+    ]);
+    rows = logRows; customerRows = custRows;
+    updateStats(); renderChart(); render(); renderCustomers();
+    document.getElementById('countLog').textContent = '(' + rows.length + ')';
+    document.getElementById('countCustomers').textContent = '(' + customerRows.length + ')';
+    setStatus('live', 'Live · updated ' + new Date().toLocaleTimeString());
+  } catch (err) {
+    setStatus('error', 'Could not load data');
+    document.getElementById('panel').innerHTML = `<div class="error-box"><strong>Can't reach the ledger.</strong><br>
+      Make sure both sheet tabs are shared as "Anyone with the link can view", and that the Sheet ID in this file is correct. Then hit Refresh.</div>`;
+  }
+}
+
+// ---- Tabs ----
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- Add customer form ----
+document.getElementById('addForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msgEl = document.getElementById('formMsg');
+  const btn = document.getElementById('submitBtn');
+  if (APPS_SCRIPT_URL.startsWith('PUT_')) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'Setup needed: paste your Apps Script Web App URL into this file first.';
+    return;
+  }
+  const dateValue = document.getElementById('f-date').value;
+  const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateValue);
+  if (!dateMatch) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'Please pick the last service date using the calendar picker.';
+    return;
+  }
+  const [, yr, mo, dy] = dateMatch.map(Number);
+  const parsed = new Date(yr, mo - 1, dy);
+  const valid = mo >= 1 && mo <= 12 && parsed.getFullYear() === yr && parsed.getMonth() === mo - 1 && parsed.getDate() === dy;
+  if (!valid) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'That date isn\'t valid — month must be between 1 and 12. Please use the calendar picker.';
+    return;
+  }
+  const payload = {
+    name: document.getElementById('f-name').value.trim(),
+    phone: document.getElementById('f-phone').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
+    lastServiceType: document.getElementById('f-service').value.trim(),
+    lastServiceDate: dateValue,
+    optedIn: document.getElementById('f-consent').checked ? 'yes' : 'no'
+  };
+  btn.disabled = true;
+  msgEl.className = 'form-msg';
+  msgEl.textContent = 'Adding…';
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    msgEl.className = 'form-msg ok';
+    msgEl.textContent = 'Customer added.';
+    document.getElementById('addForm').reset();
+    setTimeout(loadAll, 1500);
+  } catch (err) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'Could not add customer. Check the Apps Script URL and try again.';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('refreshBtn').addEventListener('click', loadAll);
+document.querySelectorAll('.stat.filterable').forEach(stat => {
+  stat.addEventListener('click', () => {
+    document.querySelectorAll('.stat.filterable').forEach(s => s.classList.remove('active'));
+    stat.classList.add('active');
+    statFilter = stat.dataset.filter;
+    render();
+  });
+});
+document.getElementById('searchInput').addEventListener('input', e => { searchText = e.target.value; render(); });
+document.getElementById('customerSearchInput').addEventListener('input', e => { customerSearchText = e.target.value; renderCustomers(); });
+
+// ---- CSV bulk import ----
+function parseCSV(text) {
+  const lines = text.replace(/\r\n/g, '\n').split('\n').filter(l => l.trim().length);
+  if (lines.length < 2) return [];
+  const splitLine = (line) => {
+    const out = []; let cur = ''; let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQuotes = !inQuotes; }
+      else if (ch === ',' && !inQuotes) { out.push(cur.trim()); cur = ''; }
+      else { cur += ch; }
+    }
+    out.push(cur.trim());
+    return out;
+  };
+  const header = splitLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z]/g, ''));
+  const idx = {
+    name: header.indexOf('name'),
+    phone: header.indexOf('phone'),
+    email: header.indexOf('email'),
+    lastServiceType: header.indexOf('lastservicetype'),
+    lastServiceDate: header.indexOf('lastservicedate'),
+    optedIn: header.indexOf('optedin')
+  };
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = splitLine(lines[i]);
+    const name = idx.name >= 0 ? cols[idx.name] : '';
+    const phone = idx.phone >= 0 ? cols[idx.phone] : '';
+    if (!name || !phone) continue;
+    rows.push({
+      name, phone,
+      email: idx.email >= 0 ? (cols[idx.email] || '') : '',
+      lastServiceType: idx.lastServiceType >= 0 ? (cols[idx.lastServiceType] || '') : '',
+      lastServiceDate: idx.lastServiceDate >= 0 ? (cols[idx.lastServiceDate] || '') : '',
+      optedIn: idx.optedIn >= 0 ? ((cols[idx.optedIn] || '').toLowerCase() === 'yes' ? 'yes' : 'no') : 'no'
+    });
+  }
+  return rows;
+}
+
+let selectedCsvFile = null;
+document.getElementById('csvInput').addEventListener('change', (e) => {
+  selectedCsvFile = e.target.files[0] || null;
+  document.getElementById('csvFileName').textContent = selectedCsvFile ? selectedCsvFile.name : 'No file chosen';
+  document.getElementById('csvUploadBtn').disabled = !selectedCsvFile;
+});
+
+document.getElementById('csvUploadBtn').addEventListener('click', async () => {
+  const msgEl = document.getElementById('csvMsg');
+  const btn = document.getElementById('csvUploadBtn');
+  if (!selectedCsvFile) return;
+  if (APPS_SCRIPT_URL.startsWith('PUT_')) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'Setup needed: paste your Apps Script Web App URL into this file first.';
+    return;
+  }
+  const text = await selectedCsvFile.text();
+  const customers = parseCSV(text);
+  if (!customers.length) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'No valid rows found. Check the column headers match the template.';
+    return;
+  }
+  const skippedNoConsent = customers.filter(c => c.optedIn !== 'yes').length;
+  btn.disabled = true;
+  msgEl.className = 'form-msg';
+  msgEl.textContent = `Uploading ${customers.length} customers…`;
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'bulk', customers })
+    });
+    msgEl.className = 'form-msg ok';
+    msgEl.textContent = `Added ${customers.length} customers.` + (skippedNoConsent ? ` Note: ${skippedNoConsent} had OptedIn set to "no" and were still added to the sheet, but should be excluded from campaigns.` : '');
+    selectedCsvFile = null;
+    document.getElementById('csvInput').value = '';
+    document.getElementById('csvFileName').textContent = 'No file chosen';
+    setTimeout(loadAll, 1500);
+  } catch (err) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'Upload failed. Check the Apps Script URL and try again.';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('csvTemplateLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  const csv = 'Name,Phone,Email,LastServiceType,LastServiceDate,OptedIn\nRamesh Kumar,9812345678,ramesh@email.com,Roof Repair,2025-06-15,yes\n';
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'customer-import-template.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+loadAll();
+setInterval(loadAll, REFRESH_MS);
+</script>
+</body>
+</html>
